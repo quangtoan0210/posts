@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
                     <a href="{{route('posts.create')}}" class="btn btn-success mx-1">Create</a>
-                    <a href="" class="btn btn-warning mx-1">Trash</a>
+                    <a href="{{route('posts.trashed')}}" class="btn btn-warning mx-1">Trash</a>
                 </div>
             </div>
         </div>
@@ -17,7 +17,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Id</th>
                         <th style="width:10%">Image</th>
                         <th style="width:20%">Title</th>
                         <th style="width:30%">Desciption</th>
@@ -33,17 +33,25 @@
                         <td><img src="{{asset($post->image)}}" alt="" width="150px"></td>
                         <td>{{$post->title}}</td>
                         <td>{{$post->description}}</td>
-                        <td>{{$post->category_id}}</td>
+                        <td>{{$post->category->name}}</td>
                         <td>{{date('d-m-Y',strtotime($post->created_at))}}</td>
                         <td>
-                            <a href="" class="btn btn-primary">Edit</a>
-                            <a href="" class="btn btn-success">Show</a>
-                            <a href="" class="btn btn-danger">Delete</a>
+                            <div class="d-flex mt-1">
+                                <a href="{{route('posts.edit',$post->id)}}" class="btn btn-primary">Edit</a>
+                            <a href="{{asset(route('posts.show',$post->id))}}" class="btn btn-success">Show</a>
+                            <form action="{{route('posts.destroy',$post->id)}}" method="Post">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
+             
             </table>
+            {{$posts->links()}}
         </div>
     </div>
 </div>
